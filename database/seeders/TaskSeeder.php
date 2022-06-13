@@ -20,7 +20,7 @@ class TaskSeeder extends Seeder
         $faker = Faker::create();
         $boards = Board::query()->inRandomOrder()->pluck('id')->toArray();
 
-        foreach(range(1, 50) as $_){
+        foreach(range(1, 20) as $_){
             Task::create([
                 'title' => $faker->word,
                 'board_id' => $boards[array_rand($boards)],

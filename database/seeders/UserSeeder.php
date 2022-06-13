@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach(range(0, 5) as $_){
+        foreach(range(0, 3) as $_){
             User::create([
                 'email' => $faker->unique()->email,
                 'password' => md5('abc'),

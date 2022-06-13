@@ -55,7 +55,7 @@
                                                 {{ $boards[$i]->title }}
                                             </td>
                                             <td>
-                                                {{ getRole($boards[$i]) }}
+                                                {{ getRole($boards[$i]->pivot->role) }}
                                             </td>
                                             <td>
                                                 {{ $boards[$i]->description }}
@@ -85,7 +85,7 @@
     {{-- End show table --}}
 
 
-    <!-- The Modal -->
+    <!-- Create new board -->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -96,7 +96,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <form action="{{ route('board.store') }}" method="post" id="create-board">
+                <form action="{{ route('board.create') }}" method="post" id="create-board">
                     @csrf
                     <!-- Modal body -->
                     <div class="modal-body">

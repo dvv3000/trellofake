@@ -37,7 +37,7 @@
                             <i class="fa-solid fa-table-columns"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Number of boards</p>
+                            <p class="text-sm mb-0 text-capitalize">From boards</p>
                             <h4 class="mb-0" id="n-boards"></h4>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
             $('#cards-table').DataTable({
                         processing: true,
                         serverSide: true,
-                        ajax: '{{route('card.api.getAll')}}',
+                        ajax: "{{route('card.api.getAll')}}",
                         columns: [
                             {data: 'id', name: 'id'},
                             {data: 'title', name: 'title'},
@@ -107,7 +107,7 @@
         
         
                 let xhr = new XMLHttpRequest();
-                xhr.open('GET', '{{route('card.api.getAll')}}', true);
+                xhr.open('GET', "{{route('card.api.getAll')}}", true);
         
                 xhr.onload = () => {
                     if(xhr.readyState === XMLHttpRequest.DONE){
@@ -115,8 +115,6 @@
 
                             let cards = JSON.parse(xhr.responseText).data
                             document.getElementById('n-cards').innerHTML = cards.length
-
-
 
                             let boards = cards.map((object) => object.board_title)
                                                 .filter((value, index, data) => data.indexOf(value) === index)

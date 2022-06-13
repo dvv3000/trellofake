@@ -11,7 +11,7 @@ use BenSampo\Enum\Enum;
  */
 final class CardLabelEnum extends Enum
 {
-    public const MORE_IMPORTANT =  0;
-    public const IMPORTANT =   1;
-    public const LESS_IMPORTANT = 2;
+    public const IMPORTANT =  0;
+    public const WARNING =   1;
+    public const INFOMATIONAL = 2;
 }

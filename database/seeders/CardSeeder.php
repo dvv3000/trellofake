@@ -7,6 +7,7 @@ use App\Enums\CardLabelEnum;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Card;
+use App\Models\Label;
 use Faker\Factory as Faker;
 
 use Illuminate\Database\Seeder;
@@ -21,19 +22,18 @@ class CardSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $users = User::query()->inRandomOrder()->pluck('id')->toArray();
+        $labels = Label::query()->inRandomOrder()->pluck('id')->toArray();
         $tasks = Task::query()->inRandomOrder()->pluck('id')->toArray();
 
-        foreach(range(1, 100) as $index)
+        foreach(range(1, 50) as $index)
         {
             Card::create([
                 'title' => $faker->word,
                 'description' => $faker->sentence,
                 'status' => $faker->randomElement(CardStatusEnum::getValues()),
-                'label' => $faker->randomElement(CardLabelEnum::getValues()),
                 'due_time' => $faker->dateTimeThisMonth('now', 'Asia/Ho_Chi_Minh'),
                 'task_id' => $tasks[array_rand($tasks)],
-                'member_id' => $users[array_rand($users)],
+                'label_id' => $labels[array_rand($labels)],
             ]);
         }
     }

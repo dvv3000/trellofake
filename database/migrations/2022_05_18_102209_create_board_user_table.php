@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserBoardTable extends Migration
+class CreateBoardUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -28,6 +28,6 @@ class CreateUserBoardTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_board');
+        Schema::dropIfExists('board_user');
     }
 }

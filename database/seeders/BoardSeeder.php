@@ -21,7 +21,7 @@ class BoardSeeder extends Seeder
         $faker = Faker::create();
         $users = User::query()->inRandomOrder()->pluck('id')->toArray();
 
-        foreach(range(1, 20) as $index)
+        foreach(range(1, 10) as $index)
         {
             Board::create([
                 'title' => $faker->word,

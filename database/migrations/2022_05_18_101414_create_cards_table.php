@@ -18,7 +18,7 @@ class CreateCardsTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->smallInteger('status')->default(0)->comment('CardStatusEnum')->index();
-            $table->smallInteger('label')->nullable()->comment('CardLableEnum');
+            $table->foreignId('label_id')->constrained()->onDelete('cascade');
             $table->timestamp('due_time')->nullable();
             $table->foreignId('task_id')->constrained()->onDelete('cascade');
             $table->foreignId('member_id')->nullable()->constrained('users')->nullOnDelete();

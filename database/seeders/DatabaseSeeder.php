@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BoardSeeder::class,
             TaskSeeder::class,
+            LabelSeeder::class,
             CardSeeder::class,
+            
         ]);
     }
 }

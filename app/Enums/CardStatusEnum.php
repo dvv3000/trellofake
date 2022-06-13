@@ -11,7 +11,6 @@ use BenSampo\Enum\Enum;
  */
 final class CardStatusEnum extends Enum
 {
-    public const WAITING =   0;
-    public const PENDING =   1;
-    public const COMPLETED = 2;
+    public const PENDING =  0;
+    public const COMPLETED = 1;
 }
