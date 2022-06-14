@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description', 'label_id','task_id', 'member_id', 'due_time', 'status'];
+    protected $fillable = ['title', 'description', 'label_id', 'task_id', 'member_id', 'due_time', 'status'];
 
     public function task()
     {

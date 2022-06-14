@@ -20,48 +20,6 @@ class CardController extends Controller
         return view ('dashboard');
     }
 
-    public function getAll()
-    {
-        $c = Card::query()
-        ->join('tasks', 'cards.task_id', 'tasks.id')
-        ->where('cards.member_id', session()->get('id'))
-        ->join('labels', 'cards.label_id', 'labels.id')
-        ->select('cards.*', 'tasks.board_id')
-        ->selectRaw('labels.color as label_color, labels.name as label_name');
-
-        $data = Board::query()
-        ->joinSub($c, 'c', function($join) {
-            $join->on('boards.id', '=', 'c.board_id');
-        })
-        ->select('c.*')
-        ->selectRaw('boards.title as board_title')
-        ->get();
-
-        // return 1;
-
-        return DataTables::of($data)
-        ->editColumn('status', function ($object){
-            return CardStatusEnum::getKey($object->status);
-        })
-        ->editColumn('label', function ($object){
-            return $object->label_name;
-        })
-        ->editColumn('created_at', function ($object){
-            return $object->created_at->format('Y-m-d');
-        })
-        ->editColumn('updated_at', function ($object){
-            return $object->created_at->format('Y-m-d');
-        })
-        ->editColumn('due_time', function ($object){
-            return Carbon::parse($object->due_time)->format('Y-m-d');
-        })
-        ->make(true);
-    }
-
-    public function show(Card $card) 
-    {
-        return $card;
-    }
     
     public function create(Request $request, $taskId)
     {
@@ -108,4 +66,52 @@ class CardController extends Controller
         session()->flash('message', 'Card deleted successfully!');
         return back();
     }
+
+
+
+
+    
+    public function show(Card $card) 
+    {
+        return $card;
+    }
+
+    public function getAll()
+    {
+        $c = Card::query()
+        ->join('tasks', 'cards.task_id', 'tasks.id')
+        ->where('cards.member_id', session()->get('id'))
+        ->join('labels', 'cards.label_id', 'labels.id')
+        ->select('cards.*', 'tasks.board_id')
+        ->selectRaw('labels.color as label_color, labels.name as label_name');
+
+        $data = Board::query()
+        ->joinSub($c, 'c', function($join) {
+            $join->on('boards.id', '=', 'c.board_id');
+        })
+        ->select('c.*')
+        ->selectRaw('boards.title as board_title')
+        ->get();
+
+
+        return DataTables::of($data)
+        ->editColumn('status', function ($object){
+            return CardStatusEnum::getKey($object->status);
+        })
+        ->editColumn('label', function ($object){
+            return $object->label_name;
+        })
+        ->editColumn('created_at', function ($object){
+            return $object->created_at->format('Y-m-d');
+        })
+        ->editColumn('updated_at', function ($object){
+            return $object->created_at->format('Y-m-d');
+        })
+        ->editColumn('due_time', function ($object){
+            return Carbon::parse($object->due_time)->format('Y-m-d');
+        })
+        ->make(true);
+    }
+
+
 }

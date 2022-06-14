@@ -24,13 +24,10 @@
                 <button class="btn btn-primary mt-3 me-3 new-list-btn" data-bs-toggle="modal" data-bs-target="#create-task">
                     Add Task
                 </button>
-                <form action="{{ route('board.delete', ['board' => $board->id]) }}" method="post" id="delete-board">
-                    @csrf
-                    @method('DELETE')
-                </form>
 
                 <button type="submit" class="btn btn-primary mt-3 me-3 delete-btn" data-bs-toggle="modal"
-                    data-bs-target="#check-delete">
+                    data-bs-target="#delete-modal" route="{{ route('board.delete', ['board' => $board->id]) }}"
+                    onclick="getRouteForDeleteForm(this)">
                     Delete
                 </button>
             @endif
@@ -57,14 +54,11 @@
                                     <i class="fa-solid fa-pen"></i>
                                 </div>
                                 @if (getRole($board->role) === 'OWNER')
-                                    <form method="post" action="{{ route('task.delete', ['task' => $task->id]) }}"
-                                        id="task-delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-sm border-0 px-2 fs-5"
-                                            style="background-color: transparent; color: #fff;"><i
-                                                class="fa-solid fa-trash"></i></button>
-                                    </form>
+                                    <button class="btn-sm border-0 px-2 fs-5" data-bs-toggle="modal"
+                                        data-bs-target="#delete-modal" style="background-color: transparent; color: #fff;"
+                                        route="{{ route('task.delete', ['task' => $task->id]) }}" onclick="getRouteForDeleteForm(this)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 @endif
 
                             </div>
@@ -78,14 +72,11 @@
                                             {{ $card->label->name }}
                                         </div>
                                         @if (getRole($board->role) === 'OWNER')
-                                            <form action="{{ route('card.delete', ['card' => $card->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="border-0 me-1 mt-2"
-                                                    style="background-color:transparent;"><i
-                                                        class="fa-solid fa-circle-xmark"></i></button>
-                                            </form>
+                                            <button type="submit" class="border-0 me-1 mt-2" data-bs-toggle="modal"
+                                                data-bs-target="#delete-modal" style="background-color:transparent;"
+                                                route="{{ route('card.delete', ['card' => $card->id]) }}" onclick="getRouteForDeleteForm(this)">
+                                                <i class="fa-solid fa-circle-xmark"></i>
+                                            </button>
                                         @endif
 
                                     </div>
@@ -121,11 +112,11 @@
                         <div class="card-footer mx-auto">
                             @if (getRole($board->role) === 'OWNER')
                                 <button class="btn btn-primary new-card-btn mb-0" data-bs-toggle="modal"
-                                    data-bs-target="#create-card" task="{{ $task->id }}" onclick="getTaskIdForCreateCard(this)">
+                                    data-bs-target="#create-card" task="{{ $task->id }}"
+                                    onclick="getTaskIdForCreateCard(this)">
                                     Add new card
                                 </button>
                             @endif
-
                         </div>
                     </div>
 
@@ -209,17 +200,21 @@
 
 
             {{-- Check delete button --}}
-            <div class="modal" id="check-delete">
+            <div class="modal" id="delete-modal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <!-- Modal Header -->
                         <div class="modal-header">
                             <h5 class="modal-title">Are you sure to delete that board?</h5>
+                            <form method="post" id="form-delete">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer pb-3">
                             <button type="button" class="btn btn-danger mb-1" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger mb-1" form="delete-board">Delete</button>
+                            <button type="submit" class="btn btn-danger mb-1" form="form-delete">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -235,7 +230,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
-                        <form action="{{ route('task.create', ['board' => $board->id]) }}" method="post" id="create-task">
+                        <form action="{{ route('task.create', ['board' => $board->id]) }}" method="post"
+                            id="create-task">
                             @csrf
                             <!-- Modal body -->
                             <div class="modal-body">
@@ -412,12 +408,11 @@
                     @php Session::forget('message') @endphp
                 @endif
 
-                // Disable input while updating for member
+                // Disable all input fields while updating for member
                 let inputFields = document.querySelectorAll('input, textarea')
                 let selectFields = document.querySelectorAll('select')
 
                 @if (getRole($board->role) !== 'OWNER')
-
                     for (input of inputFields) {
                         input.disabled = true
                     }
@@ -535,9 +530,14 @@
 
                 function getTaskIdForCreateCard(element) {
                     let taskId = element.getAttribute('task')
-                    let url = "{{route('card.create', ['task' => ':id'])}}"
+                    let url = "{{ route('card.create', ['task' => ':id']) }}"
                     url = url.replace(':id', taskId)
                     document.getElementById('create-card-form').setAttribute('action', url)
+                }
+
+                function getRouteForDeleteForm(element) {
+                    let route = element.getAttribute('route')
+                    document.querySelector('#form-delete').setAttribute('action', route)
                 }
             </script>
         @endpush
