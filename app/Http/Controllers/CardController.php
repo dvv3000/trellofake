@@ -113,5 +113,14 @@ class CardController extends Controller
         ->make(true);
     }
 
+    public function setStatus(Card $card) 
+    {
+        $status = $card->status ? 0 : 1;
 
+        $card->update([
+            'status' => $status,
+        ]);
+        
+        return $status;
+    }
 }

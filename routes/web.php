@@ -72,6 +72,7 @@ Route::group([
 
         Route::post('/{card}', [CardController::class, 'update'])->name('update');
         Route::delete('/delete/{card}', [CardController::class, 'delete'])->name('delete');
+        Route::get('/set-status/{card}', [CardController::class, 'setStatus'])->name('setStatus');
         
     });
 
