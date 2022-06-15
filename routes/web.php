@@ -43,7 +43,7 @@ Route::group([
     })->name('notifications');
     
     # Profile
-    Route::get('/profile/{user}', [UserController::class, 'show'])->name('profile');
+    Route::get('/profile', [UserController::class, 'show'])->name('profile');
     Route::put('/profile/update/{user}', [UserController::class, 'update'])->name('profile.update');
     
     // Board
@@ -54,6 +54,7 @@ Route::group([
         Route::delete('/delete/{board}', [BoardController::class, 'delete'])->name('delete');
         Route::put('/update/{board}', [BoardController::class, 'update'])->name('update');
         Route::post('/{board}/add-member', [BoardController::class, 'addMember'])->name('addMember');
+        Route::delete('/quit/{board}', [BoardController::class, 'quit'])->name('quit');
         Route::get('/{board}/get-members', [BoardController::class, 'getAllMembers'])->name('getAllMembers');
     });
 

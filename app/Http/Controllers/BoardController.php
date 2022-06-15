@@ -80,6 +80,12 @@ class BoardController extends Controller
         return redirect()->route('board.index');
     }
 
+    public function quit(Board $board)
+    {   
+        $board->users()->detach(session()->get('id'));
+        return redirect()->route('board.index');
+    }
+
     public function addMember(Request $request, $boardId)
     {
         try {

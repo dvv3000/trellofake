@@ -24,8 +24,6 @@
                     </div>
                     <hr class="dark horizontal my-0">
                     <div class="card-footer p-3">
-                        {{-- <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+55% </span>than
-                            lask week</p> --}}
                     </div>
                 </div>
             </div>
@@ -43,8 +41,6 @@
                     </div>
                     <hr class="dark horizontal my-0">
                     <div class="card-footer p-3">
-                        {{-- <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+3% </span>than lask
-                            month</p> --}}
                     </div>
                 </div>
             </div>
@@ -72,8 +68,8 @@
                                     <th>Board</th>
                                     <th>Label</th>
                                     <th>Status</th>
-                                    <th>Created at</th>
                                     <th>Due time</th>
+                                    <th>Created at</th>
                                 </tr>
                             </thead>
                         </table>

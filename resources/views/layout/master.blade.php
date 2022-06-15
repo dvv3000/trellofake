@@ -21,7 +21,7 @@
     {{-- <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png"> --}}
     {{-- <link rel="icon" type="image/png" href="./assets/img/favicon.png"> --}}
     <title>
-        {{config('app.name')}}
+        {{ config('app.name') }}
     </title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
@@ -50,7 +50,7 @@
         @include('layout.navbar')
 
         <!-- Content -->
-    
+
         @yield('content')
 
         <!-- End content -->
@@ -92,13 +92,18 @@
 
         // Chinh active cho sidebar
         let pathArray = window.location.pathname.split('/')
-        // console.log(pathArray)
-        if(pathArray[1] === ''){
-            sidebar.querySelector('#dashboard').classList.add('bg-gradient-primary', 'active') 
-        }
-        else {
+        console.log(pathArray)
+        if (pathArray[1] === '') {
+            sidebar.querySelector('#dashboard').classList.add('bg-gradient-primary', 'active')
+            document.querySelector('.parent1').innerHTML = 'Dashboard'
+        } else {
             sidebar.querySelector(`#${pathArray[1]}`).classList.add('bg-gradient-primary', 'active')
-            // console.log(`#${pathArray[1]}`)
+            document.querySelector('.parent1').innerHTML = capitalizeFirstLetter(pathArray[1])
+
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         }
     </script>
 

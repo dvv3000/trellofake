@@ -18,8 +18,9 @@ class UserController extends Controller
         return view('dashboard');
     }
 
-    public function show(User $user)
-    {
+    public function show()
+    {   
+        $user = User::find(session()->get('id'));
         return view('profile.index', [
             'user' => $user,
         ]);

@@ -32,19 +32,25 @@
                     onclick="getRouteForDeleteForm(this)">
                     Delete
                 </button>
+            @else
+
+                <button class="btn btn-primary mt-3 me-3 quit-board-btn" data-bs-toggle="modal" data-bs-target="#quit-board">
+                    Quit this board
+                </button>
             @endif
         </div>
     </div>
     {{-- End board buttons --}}
 
 
-    {{-- All lists --}}
+    {{-- All tasks --}}
     <div class="container-fluid">
         <div class="row g-3">
-            {{-- tasks --}}
+            {{-- task --}}
             @foreach ($board->tasks as $task)
                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                     <div class="card">
+                        {{-- Task name and its buttons --}}
                         <div class="card-header bg-gradient-primary text-white d-flex justify-content-between py-3">
                             <div class="fs-4">
                                 {{ $task->title }}
@@ -65,9 +71,9 @@
 
                             </div>
                         </div>
-
+                        {{-- Cards --}}
                         <div class="card-body py-0">
-                            {{-- Card --}}
+
                             @foreach ($task->cards as $card)
                                 <div class="card bg-gray-100 my-3">
                                     {{-- Label and delete card --}}
@@ -88,7 +94,11 @@
 
                                     <div class="card-body d-flex justify-content-between pe-0 py-4 ps-3">
                                         <div class="fs-5">
-                                            {{ $card->title }}
+                                            @if (strlen($card->title) < 12)
+                                                {{ $card->title }}
+                                            @else
+                                                {{ substr($card->title, 0, 9) . '...' }}
+                                            @endif
                                         </div>
                                         <div class="">
                                             @if (session()->get('id') === $card->member->id)
@@ -120,6 +130,8 @@
                                 </div>
                             @endforeach
                         </div>
+
+                        {{-- Create new card button --}}
                         <div class="card-footer mx-auto">
                             @if (getRole($board->role) === 'OWNER')
                                 <button class="btn btn-primary new-card-btn mb-0" data-bs-toggle="modal"
@@ -136,6 +148,9 @@
             {{-- End tasks --}}
         </div>
     </div>
+    {{-- End all tasks --}}
+
+
     {{-- Update board modal --}}
     <div class="modal" id="update-board">
         <div class="modal-dialog">
@@ -216,7 +231,7 @@
             <div class="modal-content">
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title">Are you sure to delete that board?</h5>
+                    <h5 class="modal-title">Are you sure to delete this board?</h5>
                     <form method="post" id="form-delete">
                         @csrf
                         @method('DELETE')
@@ -230,6 +245,28 @@
             </div>
         </div>
     </div>
+
+    {{-- Quit board --}}
+    <div class="modal" id="quit-board">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure to quit this board?</h5>
+                    <form method="post" action="{{ route('board.quit', ['board' => $board->id]) }}" id="quit">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer pb-3">
+                    <button type="button" class="btn btn-danger mb-1" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger mb-1" form="quit">Quit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     {{-- Create task modal --}}
     <div class="modal" id="create-task">
@@ -263,6 +300,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- Update task info modal --}}
     <div class="modal" id="update-task">
@@ -304,6 +342,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- Create card modal --}}
     <div class="modal" id="create-card">
@@ -354,6 +393,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- Update a card modal --}}
     <div class="modal" id="update-card">
@@ -423,7 +463,7 @@
         @endif
 
         // Disable all input fields while updating for member
-        let inputFields = document.querySelectorAll('input, textarea')
+        let inputFields = document.querySelectorAll('input type=["text"], textarea')
         let selectFields = document.querySelectorAll('select')
 
         @if (getRole($board->role) !== 'OWNER')
@@ -530,7 +570,10 @@
                         document.querySelector('#update-card-form .card-title').setAttribute('value', data.title)
                         document.querySelector('#update-card-form .card-description').innerText = data.description
                         document.querySelector('#update-card-form .due-time').setAttribute('value', data.due_time)
-                        document.querySelector('#update-card-form .status').innerText = data.status ? "COMPLETED" : "PENDING"
+
+                        // Hardcode
+                        document.querySelector('#update-card-form .status').innerText = data.status ? "COMPLETED" :
+                            "PENDING"
 
                         if (data.member_id) {
                             document.querySelector(`#update-card-form .select-member [value="${data.member_id}"]`)
