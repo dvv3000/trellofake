@@ -33,8 +33,8 @@
                     Delete
                 </button>
             @else
-
-                <button class="btn btn-primary mt-3 me-3 quit-board-btn" data-bs-toggle="modal" data-bs-target="#quit-board">
+                <button class="btn btn-primary mt-3 me-3 quit-board-btn" data-bs-toggle="modal"
+                    data-bs-target="#quit-board">
                     Quit this board
                 </button>
             @endif
@@ -174,8 +174,8 @@
                                     style="width: 35px; height:35px">
                             </div>
                             <label for="title" class="col-form-label">Title</label>
-                            <input type="text" class="form-control border rounded px-3 title" name="title" id="board-title"
-                                value="{{ $board->title }}">
+                            <input type="text" class="form-control border rounded px-3 title" name="title"
+                                id="board-title" value="{{ $board->title }}">
 
                             <label for="description" class="col-form-label">Description</label>
                             <textarea class="form-control border rounded px-3 description" name="description" id="board-description">{{ $board->description }}</textarea>
@@ -325,7 +325,8 @@
                                     style="width: 35px; height:35px">
                             </div>
                             <label for="title" class="col-form-label">Title</label>
-                            <input type="text" class="form-control border rounded px-3 title" name="title" id="task-title">
+                            <input type="text" class="form-control border rounded px-3 title" name="title"
+                                id="task-title">
 
                             <label for="description" class="col-form-label">Description</label>
                             <textarea class="form-control border rounded px-3 description" name="description" id="task-description"></textarea>
@@ -463,7 +464,7 @@
         @endif
 
         // Disable all input fields while updating for member
-        let inputFields = document.querySelectorAll('input type=["text"], textarea')
+        let inputFields = document.querySelectorAll('input[type="text"], input[type="date"], textarea')
         let selectFields = document.querySelectorAll('select')
 
         @if (getRole($board->role) !== 'OWNER')
@@ -477,29 +478,7 @@
 
 
 
-        // Get all members 
-        let xhrGetMember = new XMLHttpRequest();
-        xhrGetMember.open('GET', "{{ route('board.getAllMembers', ['board' => $board->id]) }}", true);
-        xhrGetMember.onload = () => {
-            if (xhrGetMember.readyState === XMLHttpRequest.DONE) {
-                if (xhrGetMember.status === 200) {
-                    let data = JSON.parse(xhrGetMember.responseText);
-                    // console.log(data)
-                    let html = ''
-                    for (user of data) {
-                        html += `<option value="${user.id}">${user.email} - ${user.name}</option>`
-                    }
-                    let selectMemberFields = document.querySelectorAll('.select-member')
-                    for (select of selectMemberFields) {
-                        select.innerHTML = html
-                    }
 
-                } else {
-                    console.log(xhrGetMember.response)
-                }
-            }
-        }
-        xhrGetMember.send()
 
         // Get all labels 
         let xhrGetLabels = new XMLHttpRequest();
@@ -529,6 +508,32 @@
         function updateTaskInfo(element) {
             let taskId = element.getAttribute('data-attr')
 
+            // Get all members
+            let xhrGetMember = new XMLHttpRequest();
+            xhrGetMember.open('GET', "{{ route('board.getAllMembers', ['board' => $board->id]) }}", true);
+            xhrGetMember.onload = () => {
+                if (xhrGetMember.readyState === XMLHttpRequest.DONE) {
+                    if (xhrGetMember.status === 200) {
+                        let data = JSON.parse(xhrGetMember.responseText);
+                        // console.log(data)
+                        let html = ''
+                        for (user of data) {
+                            html += `<option value="${user.id}">${user.email} - ${user.name}</option>`
+                        }
+                        let selectMemberFields = document.querySelectorAll('.select-member')
+                        for (select of selectMemberFields) {
+                            select.innerHTML = html
+                        }
+
+                    } else {
+                        console.log(xhrGetMember.response)
+                    }
+                }
+            }
+            xhrGetMember.send()
+
+
+            
             urlUpdate = "{{ route('task.update', ['task' => ':id']) }}"
             urlUpdate = urlUpdate.replace(':id', taskId)
             document.querySelector('#update-task-form').setAttribute('action', urlUpdate)

@@ -56,10 +56,6 @@ class UserController extends Controller
         if($image){
             $path = $image->store('images');
 
-            // $user->update([
-            //     'name' => $request->name,
-            //     'avatar' => $path,
-            // ]);
             $user->name = $request->name;
             $user->avatar = $path;
             $user->save();
@@ -73,6 +69,17 @@ class UserController extends Controller
             ])->with('alert', 'Your profile has been updated!');
         }
         
+    }
+
+    public function notifications()
+    {   
+        return view('profile.notifications');
+    }
+
+    public function getNotifs() {
+        $user = User::find(session()->get('id'));
+        $notifications = $user->notifications->sortByDesc('updated_at');
+        return $notifications;
     }
 
     /**

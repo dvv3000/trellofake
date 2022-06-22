@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BoardUserRole;
 use App\Models\Board;
 use App\Models\User;
+use App\Notifications\JoinBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -99,7 +100,10 @@ class BoardController extends Controller
                 'user_id' => $user->id,
                 'role' => BoardUserRole::MEMBER,
             ]);
-            $request->session()->flash('message', $user->email . 'is added successfully!');
+
+            $board = Board::find($boardId);
+            $user->notify(new JoinBoard($board));
+            $request->session()->flash('message', $user->email . ' is added successfully!');
             return back();
         } 
         catch (Throwable $e) {

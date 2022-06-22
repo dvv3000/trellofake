@@ -38,10 +38,8 @@ Route::group([
     
 
     // Notification
-    Route::get('/notifications', function () {
-        return view('profile.notifications');
-    })->name('notifications');
-    
+    Route::get('/notifications', [UserController::class, 'notifications'])->name('notifications');
+    Route::get('/get-notifs', [UserController::class, 'getNotifs'])->name('getNotifs');
     # Profile
     Route::get('/profile', [UserController::class, 'show'])->name('profile');
     Route::put('/profile/update/{user}', [UserController::class, 'update'])->name('profile.update');
