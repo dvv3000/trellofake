@@ -6,10 +6,8 @@ namespace App\Http\Controllers;
 use App\Enums\CardStatusEnum;
 use App\Models\Board;
 use App\Models\Card;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 use Yajra\Datatables\Datatables;
 
@@ -26,6 +24,7 @@ class CardController extends Controller
         $request->validate([
             'title' => ['bail', 'required', 'max:255'],
         ]);
+
         Card::create([
             'title' => $request->get('title'),
             'description' => $request->get('description'),
@@ -51,6 +50,8 @@ class CardController extends Controller
                 'label_id' => $request->get('label-id'),
                 'member_id' => $request->get('member-id'),
             ]);
+
+
             $request->session()->flash('message', 'Card is updated successfully!');
             return back();
         }
@@ -66,8 +67,6 @@ class CardController extends Controller
         session()->flash('message', 'Card deleted successfully!');
         return back();
     }
-
-
 
 
     

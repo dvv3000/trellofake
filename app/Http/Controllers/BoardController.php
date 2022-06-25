@@ -39,6 +39,7 @@ class BoardController extends Controller
         ->where('boards.id', $boardId)
         ->where('board_user.user_id', session()->get('id'))
         ->first();
+        // $data = Board::find($boardId);
         $owner = $data->users->firstWhere('pivot.role', 0);
         return view('boards.board', [
             'board' => $data,
@@ -84,6 +85,7 @@ class BoardController extends Controller
     public function quit(Board $board)
     {   
         $board->users()->detach(session()->get('id'));
+        $board->cards()->where('member_id', session()->get('id'))->delete();
         return redirect()->route('board.index');
     }
 

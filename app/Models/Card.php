@@ -11,6 +11,9 @@ class Card extends Model
 {
     use HasFactory;
     protected $fillable = ['title', 'description', 'label_id', 'task_id', 'member_id', 'due_time', 'status'];
+    protected $observers = [
+        Card::class => [CardObserver::class]
+    ];
 
     public function task()
     {

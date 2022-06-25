@@ -477,7 +477,29 @@
         @endif
 
 
+        // Get all members
+        let xhrGetMember = new XMLHttpRequest();
+        xhrGetMember.open('GET', "{{ route('board.getAllMembers', ['board' => $board->id]) }}", true);
+        xhrGetMember.onload = () => {
+            if (xhrGetMember.readyState === XMLHttpRequest.DONE) {
+                if (xhrGetMember.status === 200) {
+                    let data = JSON.parse(xhrGetMember.responseText);
+                    // console.log(data)
+                    let html = ''
+                    for (user of data) {
+                        html += `<option value="${user.id}">${user.email} - ${user.name}</option>`
+                    }
+                    let selectMemberFields = document.querySelectorAll('.select-member')
+                    for (select of selectMemberFields) {
+                        select.innerHTML = html
+                    }
 
+                } else {
+                    console.log(xhrGetMember.response)
+                }
+            }
+        }
+        xhrGetMember.send()
 
 
         // Get all labels 
@@ -508,32 +530,10 @@
         function updateTaskInfo(element) {
             let taskId = element.getAttribute('data-attr')
 
-            // Get all members
-            let xhrGetMember = new XMLHttpRequest();
-            xhrGetMember.open('GET', "{{ route('board.getAllMembers', ['board' => $board->id]) }}", true);
-            xhrGetMember.onload = () => {
-                if (xhrGetMember.readyState === XMLHttpRequest.DONE) {
-                    if (xhrGetMember.status === 200) {
-                        let data = JSON.parse(xhrGetMember.responseText);
-                        // console.log(data)
-                        let html = ''
-                        for (user of data) {
-                            html += `<option value="${user.id}">${user.email} - ${user.name}</option>`
-                        }
-                        let selectMemberFields = document.querySelectorAll('.select-member')
-                        for (select of selectMemberFields) {
-                            select.innerHTML = html
-                        }
-
-                    } else {
-                        console.log(xhrGetMember.response)
-                    }
-                }
-            }
-            xhrGetMember.send()
 
 
-            
+
+
             urlUpdate = "{{ route('task.update', ['task' => ':id']) }}"
             urlUpdate = urlUpdate.replace(':id', taskId)
             document.querySelector('#update-task-form').setAttribute('action', urlUpdate)

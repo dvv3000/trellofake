@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Card;
+use App\Observers\CardObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        Card::observe(CardObserver::class);
     }
 }

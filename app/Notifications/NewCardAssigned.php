@@ -3,26 +3,27 @@
 namespace App\Notifications;
 
 use App\Models\Board;
-use App\Models\User;
+use App\Models\Card;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class JoinBoard extends Notification implements ShouldQueue
+class NewCardAssigned extends Notification
 {
     use Queueable;
-    // protected $user;
-    protected $board;
+    protected $card;
+
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Board $board)
+    public function __construct(Card $card)
     {
-        $this->board = $board;
+        $this->card = $card;
+        $this->board = $card->task->board;
     }
 
     /**
@@ -33,7 +34,9 @@ class JoinBoard extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database',
+                // 'broadcast',
+    ];
     }
 
     /**
@@ -59,6 +62,7 @@ class JoinBoard extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
+            'card' => $this->card,
             'board' => $this->board,
         ];
     }

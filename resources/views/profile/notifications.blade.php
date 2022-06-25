@@ -15,7 +15,7 @@
 @push('js')
     {{-- bugs on select element --}}
 
-    
+
     <script>
         let xhr = new XMLHttpRequest();
 
@@ -28,15 +28,25 @@
 
                     let html = ''
                     for (notif of response) {
-                        boardId = notif.data.board_id
+                        boardId = notif.data.board.id
                         url = "{{ route('board.show', ['board' => ':id']) }}".replace(':id', boardId)
-
-                        html +=
-                            `<div class="alert alert-info alert-dismissible text-white" role="alert">
-                                <span class="text-sm">
+                        console.log(notif)
+                        if (notif.type.includes('NewCardAssigned')) {
+                            content = `<span class="text-white">
+                                    You have a new card "${notif.data.card.title}" from board
+                                    <a href="${url}" class="alert-link text-white">${notif.data.board.title}</a>
+                                    . Check it out.</span>
+                                    <span class="text-white float-end">${notif.created_at}</span>`
+                        } else {
+                            content = `<span class="text-white">
                                     You have been added to
                                     <a href="${url}" class="alert-link text-white"> a new board</a>
                                     . Check it out.</span>
+                                    <span class="text-white  float-end">${notif.created_at}</span>`
+                        }
+                        html +=
+                            `<div class="alert alert-info alert-dismissible text-white" role="alert">
+                                ${content}
                                 <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
                                     aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -45,7 +55,7 @@
                     }
 
                     document.querySelector('.notif-content').innerHTML = html
-                } 
+                }
             }
         }
         xhr.send()
