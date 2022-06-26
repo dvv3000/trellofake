@@ -10,6 +10,7 @@
 
         </div>
     </div>
+@endsection
 
 @push('js')
     {{-- bugs on select element --}}
