@@ -6,6 +6,7 @@ use App\Enums\BoardUserRole;
 use App\Models\Board;
 use App\Models\User;
 use App\Notifications\JoinBoard;
+use App\Notifications\QuitBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -31,20 +32,26 @@ class BoardController extends Controller
 
     public function show($boardId)
     {
-        $data = Board::query()
-        ->join('board_user', 'boards.id', '=', 'board_user.board_id')
-        // ->join('users', 'users.id', '=', 'board_user.user_id')
-        ->select('boards.*', 'board_user.role')
-        // ->selectRaw( 'users.name as owner_name, users.avatar as owner_avatar')
-        ->where('boards.id', $boardId)
-        ->where('board_user.user_id', session()->get('id'))
-        ->first();
-        // $data = Board::find($boardId);
-        $owner = $data->users->firstWhere('pivot.role', 0);
-        return view('boards.board', [
-            'board' => $data,
-            'owner' => $owner,
-        ]);
+        try{
+            $data = Board::query()
+            ->join('board_user', 'boards.id', '=', 'board_user.board_id')
+            // ->join('users', 'users.id', '=', 'board_user.user_id')
+            ->select('boards.*', 'board_user.role')
+            // ->selectRaw( 'users.name as owner_name, users.avatar as owner_avatar')
+            ->where('boards.id', $boardId)
+            ->where('board_user.user_id', session()->get('id'))
+            ->first();
+    
+            $owner = $data->users->firstWhere('pivot.role', 0);
+            return view('boards.board', [
+                'board' => $data,
+                'owner' => $owner,
+            ]);
+        }
+        catch(Throwable $e){
+            return back()->with('message', 'You are not in this board anymore!');
+        }
+
     }
 
     public function create(Request $request)
@@ -82,10 +89,14 @@ class BoardController extends Controller
         return redirect()->route('board.index');
     }
 
+    # member quit a board
     public function quit(Board $board)
     {   
         $board->users()->detach(session()->get('id'));
         $board->cards()->where('member_id', session()->get('id'))->delete();
+    
+        $user = User::find(session()->get('id'));
+        $user->notify(new QuitBoard($board));
         return redirect()->route('board.index');
     }
 

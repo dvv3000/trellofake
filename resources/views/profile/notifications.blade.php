@@ -10,13 +10,17 @@
 
         </div>
     </div>
-@endsection
 
 @push('js')
     {{-- bugs on select element --}}
 
 
     <script>
+        // Throw message
+        @if (Session::has('message'))
+            alert('{{ Session::get('message') }}')
+            @php Session::forget('message') @endphp
+        @endif
         let xhr = new XMLHttpRequest();
 
         xhr.open('GET', `{{ route('getNotifs') }}`, true);
@@ -37,12 +41,18 @@
                                     <a href="${url}" class="alert-link text-white">${notif.data.board.title}</a>
                                     . Check it out.</span>
                                     <span class="text-white float-end">${notif.created_at}</span>`
-                        } else {
+                        } else if (notif.type.includes('JoinBoard')) {
                             content = `<span class="text-white">
                                     You have been added to
                                     <a href="${url}" class="alert-link text-white"> a new board</a>
                                     . Check it out.</span>
                                     <span class="text-white  float-end">${notif.created_at}</span>`
+                        } else {
+                            content = `<span class="text-white">
+                                    You just quitted 
+                                    <a href="${url}" class="alert-link text-white"> ${notif.data.board.title}</a>
+                                    board.</span>
+                                    <span class="text-white float-end">${notif.created_at}</span>`
                         }
                         html +=
                             `<div class="alert alert-info alert-dismissible text-white" role="alert">

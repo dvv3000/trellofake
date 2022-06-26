@@ -17,7 +17,7 @@
                 <li class="nav-item dropdown d-flex align-items-center me-4 ms-4">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-bell cursor-pointer"></i>
+                        {{-- <i class="fa fa-bell cursor-pointer"></i> --}}
                     </a>
                     {{-- <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
                         aria-labelledby="dropdownMenuButton">
