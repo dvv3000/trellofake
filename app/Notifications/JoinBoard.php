@@ -5,11 +5,11 @@ namespace App\Notifications;
 use App\Models\Board;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class JoinBoard extends Notification implements ShouldQueue
+class JoinBoard extends Notification implements ShouldQueue, ShouldBroadcast
 {
     use Queueable;
     // protected $user;
@@ -33,22 +33,12 @@ class JoinBoard extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return [
+            'database',
+            'broadcast',
+        ];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
 
     /**
      * Get the array representation of the notification.
@@ -57,6 +47,13 @@ class JoinBoard extends Notification implements ShouldQueue
      * @return array
      */
     public function toArray($notifiable)
+    {
+        return [
+            'board' => $this->board,
+        ];
+    }
+
+    public function toBroadcast($notifiable)
     {
         return [
             'board' => $this->board,

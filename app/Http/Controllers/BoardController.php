@@ -127,6 +127,6 @@ class BoardController extends Controller
 
     public function getAllMembers(Board $board)
     {
-        return $board->users;
+        return $board->users->toJSON();
     }
 }

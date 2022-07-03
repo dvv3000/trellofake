@@ -476,7 +476,6 @@
             }
         @endif
 
-
         // Get all members
         let xhrGetMember = new XMLHttpRequest();
         xhrGetMember.open('GET', "{{ route('board.getAllMembers', ['board' => $board->id]) }}", true);
@@ -484,7 +483,6 @@
             if (xhrGetMember.readyState === XMLHttpRequest.DONE) {
                 if (xhrGetMember.status === 200) {
                     let data = JSON.parse(xhrGetMember.responseText);
-                    // console.log(data)
                     let html = ''
                     for (user of data) {
                         html += `<option value="${user.id}">${user.email} - ${user.name}</option>`
@@ -625,5 +623,12 @@
             }
             xhr.send()
         }
+    </script>
+    <script src="{{asset('js/app.js')}}"></script>
+    <script>
+        channel = 'App.Models.User.' + {{session()->get('id')}}
+        Echo.private(channel).notification((notification) => {
+            console.log(notification)
+        })
     </script>
 @endpush

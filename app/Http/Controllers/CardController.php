@@ -72,7 +72,7 @@ class CardController extends Controller
     
     public function show(Card $card) 
     {
-        return $card;
+        return $card->toJSON();
     }
 
     public function getAll()

@@ -10,6 +10,6 @@ class LabelController extends Controller
     public function getAll() 
     {
         $labels = Label::all();
-        return $labels;
+        return $labels->toJSON();
     }
 }
