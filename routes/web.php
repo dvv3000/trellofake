@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TestEvent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\AuthController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +79,9 @@ Route::group([
 
     // Label
     Route::get('/labels/get-all', [LabelController::class, 'getAll'])->name('label.getAll');
+    Route::get('test', function(){
+        event(new TestEvent('hello'));
+    });
     
 });
 

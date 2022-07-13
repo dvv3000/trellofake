@@ -613,7 +613,7 @@
                     if (xhr.status === 200) {
                         currentStatus = xhr.responseText
                         let a = document.querySelector(`#date-${cardId}`)
-                        console.log(a)
+                        // console.log(a)
                         a.classList.toggle('completed')
 
                     } else {
@@ -625,10 +625,23 @@
         }
     </script>
     <script src="{{asset('js/app.js')}}"></script>
-    <script>
-        channel = 'App.Models.User.' + {{session()->get('id')}}
+    {{-- <script>
+
+        channel = 'App.Models.User.' + {{ session()->get('id') }}
+        channel = 'App.Models.User.1'
         Echo.private(channel).notification((notification) => {
             console.log(notification)
         })
-    </script>
+    </script> --}}
+
+    {{-- <script>
+    var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+        encrypted: true,
+        cluster: "ap1"
+    });
+    var channel = pusher.subscribe('TestEvent');
+    channel.bind('test-channel', function(data) {
+        console.log(data);
+    });
+    </script> --}}
 @endpush

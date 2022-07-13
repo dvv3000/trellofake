@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BoardUserRole;
+use App\Events\TestEvent;
 use App\Models\Board;
 use App\Models\User;
 use App\Notifications\JoinBoard;
 use App\Notifications\QuitBoard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Pusher\Pusher;
 use Throwable;
 
 class BoardController extends Controller
@@ -41,8 +43,22 @@ class BoardController extends Controller
             ->where('boards.id', $boardId)
             ->where('board_user.user_id', session()->get('id'))
             ->first();
-    
             $owner = $data->users->firstWhere('pivot.role', 0);
+
+            // $options = array(
+            //     'cluster' => 'ap1',
+            //     'encrypted' => true
+            // );
+    
+            // $pusher = new Pusher(
+            //     env('PUSHER_APP_KEY'),
+            //     env('PUSHER_APP_SECRET'),
+            //     env('PUSHER_APP_ID'),
+            //     $options
+            // );
+    
+            // $pusher->trigger('TestEvent', 'test-channel', 'hello');
+    
             return view('boards.board', [
                 'board' => $data,
                 'owner' => $owner,

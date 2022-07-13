@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
 class JoinBoard extends Notification implements ShouldQueue, ShouldBroadcast
@@ -55,8 +56,8 @@ class JoinBoard extends Notification implements ShouldQueue, ShouldBroadcast
 
     public function toBroadcast($notifiable)
     {
-        return [
+        return new BroadcastMessage([
             'board' => $this->board,
-        ];
+        ]);
     }
 }

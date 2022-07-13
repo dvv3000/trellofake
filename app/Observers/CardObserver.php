@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Card;
 use App\Models\User;
+use App\Notifications\CardUpdated;
 use App\Notifications\NewCardAssigned;
 
 class CardObserver
@@ -29,7 +30,7 @@ class CardObserver
     public function updated(Card $card)
     {
         $user = User::find($card->member_id);
-        $user->notify(new NewCardAssigned($card));
+        $user->notify(new CardUpdated($card));
     }
 
     /**

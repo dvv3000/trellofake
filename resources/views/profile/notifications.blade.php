@@ -35,7 +35,6 @@
                     for (notif of response) {
                         boardId = notif.data.board.id
                         url = "{{ route('board.show', ['board' => ':id']) }}".replace(':id', boardId)
-                        console.log(notif)
                         if (notif.type.includes('NewCardAssigned')) {
                             content = `<span class="text-white">
                                     You have a new card "${notif.data.card.title}" from board
@@ -46,6 +45,12 @@
                             content = `<span class="text-white">
                                     You have been added to
                                     <a href="${url}" class="alert-link text-white"> a new board</a>
+                                    . Check it out.</span>
+                                    <span class="text-white  float-end">${notif.created_at}</span>`
+                        } else if (notif.type.includes('CardUpdated')) {
+                            content = `<span class="text-white">
+                                    One of your card have been updated
+                                    <a href="${url}" class="alert-link text-white">"${notif.data.card.title}"</a>
                                     . Check it out.</span>
                                     <span class="text-white  float-end">${notif.created_at}</span>`
                         } else {

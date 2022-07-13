@@ -2,25 +2,27 @@
 
 namespace App\Notifications;
 
-use App\Models\Board;
+use App\Models\Card;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class QuitBoard extends Notification implements ShouldQueue, ShouldBroadcast
+class CardUpdated extends Notification
 {
     use Queueable;
+    protected $card;
     protected $board;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Board $board)
+    public function __construct(Card $card)
     {
-        $this->board = $board;
+        $this->card = $card;
+        $this->board = $card->task->board;
     }
 
     /**
@@ -31,12 +33,8 @@ class QuitBoard extends Notification implements ShouldQueue, ShouldBroadcast
      */
     public function via($notifiable)
     {
-        return [
-            'database',
-            'broadcast',
-        ];
+        return ['database'];
     }
-
 
 
     /**
@@ -48,14 +46,8 @@ class QuitBoard extends Notification implements ShouldQueue, ShouldBroadcast
     public function toArray($notifiable)
     {
         return [
+            'card' => $this->card,
             'board' => $this->board,
         ];
-    }
-
-    public function toBroadcast($notifiable)
-    {   
-        return new BroadcastMessage([
-            'board' => $this->board,
-        ]);
     }
 }

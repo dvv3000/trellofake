@@ -15,6 +15,7 @@ class NewCardAssigned extends Notification implements ShouldQueue, ShouldBroadca
 {
     use Queueable;
     protected $card;
+    protected $board;
 
 
     /**
@@ -58,8 +59,8 @@ class NewCardAssigned extends Notification implements ShouldQueue, ShouldBroadca
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'card' => "$this->card",
-            'board' => "$this->board",
+            'card' => $this->card,
+            'board' => $this->board,
         ]);
     }
 }

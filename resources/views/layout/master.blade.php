@@ -32,7 +32,6 @@
 
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/93209c9eea.js" crossorigin="anonymous"></script>
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> --}}
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -92,7 +91,6 @@
 
         // Chinh active cho sidebar
         let pathArray = window.location.pathname.split('/')
-        console.log(pathArray)
         if (pathArray[1] === '') {
             sidebar.querySelector('#dashboard').classList.add('bg-gradient-primary', 'active')
             document.querySelector('.parent1').innerHTML = 'Dashboard'
