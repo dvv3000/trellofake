@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -53,23 +52,22 @@ class UserController extends Controller
         }
 
         $image = $request->file('avatar');
-
         if($image){
             $path = $image->store('images');
-
-            $user->name = $request->name;
             $user->avatar = $path;
-            $user->save();
-
-
-            session()->put('name', $request->name);
             session()->put('avatar', $path);
-
-            return redirect()->route('profile', [
-                'user' => $user->id,
-            ])->with('alert', 'Your profile has been updated!');
         }
+        $user->name = $request->name;            
+        $user->save();
+    
+    
+        session()->put('name', $request->name);
         
+
+        return redirect()->route('profile', [
+            'user' => $user->id,
+        ])->with('alert', 'Your profile has been updated!');
+
     }
 
     public function notifications()

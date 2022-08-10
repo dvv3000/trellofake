@@ -14,7 +14,7 @@
 
 
             <ul class="navbar-nav justify-content-end">
-                <li class="nav-item dropdown d-flex align-items-center me-4 ms-4">
+                {{-- <li class="nav-item dropdown d-flex align-items-center me-4 ms-4">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-bell cursor-pointer"></i>
@@ -95,7 +95,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="nav-item d-flex align-items-center me-2 ms-2">
                     <a href="{{ route('signout') }}" class="nav-link text-body font-weight-bold px-0">
